@@ -69,19 +69,19 @@ export const getPortfolioAllocation = async (formData: FormData): Promise<Alloca
         const result = JSON.parse(jsonText);
 
         if (!result.allocation || !Array.isArray(result.allocation)) {
-            throw new Error("Invalid allocation format received from AI.");
+            throw new Error("Invalid allocation format received from the analysis service.");
         }
 
         const totalPercentage = result.allocation.reduce((sum: number, item: AllocationItem) => sum + item.percentage, 0);
 
         if (Math.abs(100 - totalPercentage) > 1) { // Allow for small rounding errors
-            throw new Error(`AI returned an allocation that does not sum to 100% (got ${totalPercentage}%). Please try again.`);
+            throw new Error(`The analysis returned an allocation that does not sum to 100% (got ${totalPercentage}%). Please try again.`);
         }
         
         return result.allocation as AllocationItem[];
 
     } catch (error) {
         console.error("Error fetching portfolio allocation from Gemini API:", error);
-        throw new Error("Failed to generate investment plan. The AI model may be temporarily unavailable.");
+        throw new Error("Failed to generate investment plan. The analysis service may be temporarily unavailable.");
     }
 };

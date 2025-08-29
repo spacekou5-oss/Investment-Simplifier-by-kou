@@ -12,7 +12,13 @@ interface ResultsScreenProps {
     onReset: () => void;
 }
 
-const COLORS = ['#2563EB', '#60A5FA', '#F59E0B', '#9333EA', '#84CC16'];
+const COLORS = ['#4338CA', '#6D28D9', '#DB2777', '#F59E0B', '#16A34A'];
+
+const CheckIcon = () => (
+    <svg className="w-6 h-6 text-green-500 mr-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+);
 
 const ResultsScreen: React.FC<ResultsScreenProps> = ({ plan, onReset }) => {
     const [isDownloading, setIsDownloading] = useState(false);
@@ -51,7 +57,7 @@ const ResultsScreen: React.FC<ResultsScreenProps> = ({ plan, onReset }) => {
                 <h2 className="text-3xl font-bold text-primary mb-8 text-center" style={{ animationDelay: '100ms' }}>Your Personalized Investment Plan</h2>
                 <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
                     <div className="lg:col-span-2 space-y-8">
-                        <div className="bg-surface p-6 rounded-2xl shadow-lg" style={{ animationDelay: '200ms' }}>
+                        <div className="bg-surface p-6 rounded-2xl shadow-md border border-slate-100" style={{ animationDelay: '200ms' }}>
                             <h3 className="text-xl font-bold text-primary mb-4">Your Inputs</h3>
                             <ul className="space-y-2 text-primary">
                                 <li><strong>Age:</strong> <span className="text-secondary">{inputs.age}</span></li>
@@ -60,7 +66,7 @@ const ResultsScreen: React.FC<ResultsScreenProps> = ({ plan, onReset }) => {
                                 <li><strong>Monthly Contribution:</strong> <span className="text-secondary">${inputs.monthlyContribution.toLocaleString()}</span></li>
                             </ul>
                         </div>
-                        <div className="bg-surface p-6 rounded-2xl shadow-lg" style={{ animationDelay: '300ms' }}>
+                        <div className="bg-surface p-6 rounded-2xl shadow-md border border-slate-100" style={{ animationDelay: '300ms' }}>
                             <h3 className="text-xl font-bold text-primary mb-4">Recommended Allocation</h3>
                             <ul className="space-y-4">
                                 {allocation.map((item) => (
@@ -75,7 +81,7 @@ const ResultsScreen: React.FC<ResultsScreenProps> = ({ plan, onReset }) => {
                             </ul>
                         </div>
                     </div>
-                    <div className="lg:col-span-3 bg-surface p-6 rounded-2xl shadow-lg" style={{ animationDelay: '400ms' }}>
+                    <div className="lg:col-span-3 bg-surface p-6 rounded-2xl shadow-md border border-slate-100" style={{ animationDelay: '400ms' }}>
                         <h3 className="text-xl font-bold text-primary mb-4 text-center">Portfolio Visualization</h3>
                         <ResponsiveContainer width="100%" height={300}>
                             <PieChart>
@@ -85,11 +91,12 @@ const ResultsScreen: React.FC<ResultsScreenProps> = ({ plan, onReset }) => {
                                     ))}
                                 </Pie>
                                 <Tooltip />
+                                <Legend />
                             </PieChart>
                         </ResponsiveContainer>
                     </div>
                 </div>
-                <div className="bg-surface p-6 rounded-2xl my-8 shadow-lg" style={{ animationDelay: '500ms' }}>
+                <div className="bg-surface p-6 rounded-2xl my-8 shadow-md border border-slate-100" style={{ animationDelay: '500ms' }}>
                     <h3 className="text-xl font-bold text-primary mb-4">Projected Growth <span className="text-sm font-normal text-secondary">(Assumes 7% annual return)</span></h3>
                     <ResponsiveContainer width="100%" height={300}>
                         <LineChart data={growth}>
@@ -97,17 +104,20 @@ const ResultsScreen: React.FC<ResultsScreenProps> = ({ plan, onReset }) => {
                             <XAxis dataKey="name" stroke="#6B7280" />
                             <YAxis stroke="#6B7280" tickFormatter={(value) => `$${(Number(value) / 1000)}k`} />
                             <Tooltip formatter={(value) => `$${Number(value).toLocaleString()}`} />
-                            <Line type="monotone" dataKey="value" stroke="#2563EB" strokeWidth={2} dot={{ r: 4 }} activeDot={{ r: 8 }} />
+                            <Line type="monotone" dataKey="value" stroke={COLORS[0]} strokeWidth={2} dot={{ r: 4 }} activeDot={{ r: 8 }} />
                         </LineChart>
                     </ResponsiveContainer>
                 </div>
-                <div className="bg-surface p-8 rounded-2xl shadow-lg" style={{ animationDelay: '600ms' }}>
+                <div className="bg-surface p-8 rounded-2xl shadow-md border border-slate-100" style={{ animationDelay: '600ms' }}>
                     <h3 className="text-xl font-bold text-primary mb-6">Your Action Checklist</h3>
-                    <ol className="list-decimal list-inside space-y-4 text-secondary">
+                    <div className="space-y-4">
                         {['Open a brokerage account (e.g., Fidelity, Vanguard).', `Set up automated transfers of $${inputs.monthlyContribution.toLocaleString()}/month.`, 'Buy the recommended ETFs based on your allocation.', 'Enable automatic investing if your broker supports it.'].map((step, i) => (
-                            <li key={i} className="pl-2"><span className="text-primary">{step}</span></li>
+                            <div key={i} className="flex items-start">
+                                <CheckIcon />
+                                <span className="text-primary">{step}</span>
+                            </div>
                         ))}
-                    </ol>
+                    </div>
                 </div>
             </div>
             <div className="mt-10 flex flex-col md:flex-row justify-center items-center gap-4" style={{ animationDelay: '700ms' }}>

@@ -102,8 +102,8 @@ const App: React.FC = () => {
                 return (
                     <div className="flex flex-col items-center justify-center min-h-screen text-center p-4">
                         <Spinner />
-                        <h2 className="text-2xl font-bold text-primary mt-6">Generating Your Plan...</h2>
-                        <p className="mt-2 text-secondary">Our AI is crafting a personalized portfolio just for you.</p>
+                        <h2 className="text-2xl font-bold text-primary mt-6">Building Your Plan...</h2>
+                        <p className="mt-2 text-secondary max-w-sm">Analyzing your profile to build a personalized, research-based investment strategy.</p>
                     </div>
                 );
             case 'results':
